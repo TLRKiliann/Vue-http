@@ -1,41 +1,49 @@
 <template>
-    <h2>SecondComp</h2>
-    <div v-for="post in getPosts" :key="post?.id">
-        <div v-if="post">
+    <div>
+        <h2>SecondComp</h2>
+        <button @click="getPosts">Loader</button>
+        <div v-if="errorMsg">
+            <h2>{{ errorMsg }}</h2>
+        </div>
+        <div v-for="post in posts.slice(0, 20)" :key="post.id">
             <h2>{{ post.id }}</h2>
             <h2>{{ post.title }}</h2>
             <h3>{{ post.body }}</h3>
-        </div>
-        <div v-else="error">
-            <h2>{{ error?.message }}</h2>
+            <hr />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { defineComponent } from 'vue';
-type DataProps = {
-    id: number,
-    title: string,
-    body: string
+type DataPosts = {
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
 }
 export default defineComponent({
     name:'SecondComp',
+    /*created() {
+        this.getPosts()
+    },*/
     data() {
         return {
-            getPosts,
-            posts: []
+            posts: [],
+            errorMsg: '',
         }
     },
     methods: {
         getPosts() {
-            axios.get('http://...')
-                .then((response: { data: DataProps; }) => {
-                    response.data
+            axios.get<DataPosts[]>('https://jsonplaceholder.typicode.com/posts')
+                .then((response: AxiosResponse) => {
+                    console.log(response.data)
+                    this.posts = response.data
                 })
-                .catch((error: { message: string; }) => {
-                    console.log(error.message)
+                .catch((error: string) => {
+                    console.log(error)
+                    this.errorMsg = error
                 })
         }
     }
