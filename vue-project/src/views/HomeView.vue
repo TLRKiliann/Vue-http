@@ -1,10 +1,10 @@
 <script lang="ts">
-import SecondComp from '../components/SecondComp.vue'
+import TodoList from '../components/TodoList.vue'
 import { defineComponent } from 'vue';
 export default defineComponent({
   name:'HomeView',
   components: {
-    SecondComp
+    TodoList
   },
   data() {
     return {
@@ -15,7 +15,7 @@ export default defineComponent({
 
 <template>
   <main>
-    <SecondComp />
+    <TodoList />
   </main>
 </template>
 
